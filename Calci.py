@@ -1,42 +1,58 @@
-# WAP to make simple calculator using function performs atleast 5 operations
+import streamlit as st
 
-# creating functions for all operations
-def add(a,b):
-    return a+b
-def sub(a,b):
-    if a>b:
-        return a-b
+# ---- Functions for all operations ----
+def add(a, b):
+    return a + b
+
+def sub(a, b):
+    if a > b:
+        return a - b
     else:
-        return -(b-a)    
-def mul(a,b):
-    return a*b
-def div(a,b):
-    return a/b
-def avg(a,b):
-    av = (a+b)/2
-    return av
+        return -(b - a)
 
-# statement to choose operation
-print("Please Select Operation : \n "\
-      "1. 'add' for Addition"\
-      "2. 'sub' for Substraction"\
-      "3. 'mul' for Multiplication"\
-      "4. 'div' for Division"\
-      "5. 'av' for Average")
-# taking input for from user
-select = int((input("select a operation from 1 to 5 :")))
-a = int(input("Enter First Number : "))
-b = int(input("Enter Second Number : "))
-# conditions for user selection~
-if select == 1:
-    print(a," + ",b," = ",add(a,b))
-elif select == 2:
-    print(a," - ",b," = ",sub(a,b))
-elif select == 3:
-    print(a," * ",b," = ",mul(a,b))
-elif select == 4:
-    print(a," / ",b," = ",div(a,b))
-elif select == 5:
-    print("(",a," + ",b,")"," = ",avg(a,b))
-else:
-    ("Invalid Input")
+def mul(a, b):
+    return a * b
+
+def div(a, b):
+    if b == 0:
+        return "Error: Division by zero"
+    return a / b
+
+def avg(a, b):
+    return (a + b) / 2
+
+
+# ---- Streamlit UI ----
+st.set_page_config(page_title="Simple Calculator", page_icon="🧮", layout="centered")
+
+st.title("🧮 Simple Calculator")
+st.write("Select an operation and enter two numbers.")
+
+col1, col2 = st.columns(2)
+with col1:
+    a = st.number_input("Enter First Number", value=0.0, step=1.0)
+with col2:
+    b = st.number_input("Enter Second Number", value=0.0, step=1.0)
+
+operation = st.radio(
+    "Select Operation",
+    ["Addition", "Subtraction", "Multiplication", "Division", "Average"],
+    horizontal=True,
+)
+
+if st.button("Calculate", use_container_width=True):
+    if operation == "Addition":
+        result = add(a, b)
+        st.success(f"{a} + {b} = {result}")
+    elif operation == "Subtraction":
+        result = sub(a, b)
+        st.success(f"{a} - {b} = {result}")
+    elif operation == "Multiplication":
+        result = mul(a, b)
+        st.success(f"{a} × {b} = {result}")
+    elif operation == "Division":
+        result = div(a, b)
+        st.success(f"{a} / {b} = {result}")
+    elif operation == "Average":
+        result = avg(a, b)
+        st.success(f"Average of {a} and {b} = {result}")
